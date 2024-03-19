@@ -13,7 +13,20 @@ def article_list():
     if not user:
         return
 
-    articles = ArticleModel.query.filter_by(user_id=user.id).all()
+    _data = request.get_json()
+    _search = _data.get('search', None)
+
+    articles = []
+
+    if _search:
+        articles = ArticleModel.query.filter(
+            ArticleModel.user_id == user.id,
+            ArticleModel.title.like('%{keyword}%'.format(keyword=_search))
+        ).all()
+    else:
+        articles = ArticleModel.query.filter_by(user_id=user.id).all()
+
+    print('articles：', articles)
 
     temp_articles_list = []
     for a in articles:

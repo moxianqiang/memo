@@ -14,7 +14,6 @@ def todo_list():
         return
 
     todos = TodoModel.query.filter_by(user_id=user.id).all()
-    print('todos：', todos)
 
     temp_todo_list = []
     for t in todos:
